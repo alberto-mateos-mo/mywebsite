@@ -1,0 +1,530 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+<title>
+  
+     Creando paquetes en R | 
+    David Alberto
+  
+</title><meta name="description" content="A personal blog, just because."><meta name="author" content="David">
+
+<link rel="apple-touch-icon" href="/apple-touch-icon.png" sizes="180x180">
+<link rel="icon" href="/favicon-32x32.png " sizes="32x32" type="image/png">
+<link rel="icon" href="/favicon-16x16.png" sizes="16x16" type="image/png">
+<link rel="manifest" href="/manifest.json">
+<link rel="mask-icon" href="/safari-pinned-tab.svg" color="#0c344b">
+<link rel="icon" href="/favicon.ico">
+
+
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.17.1/themes/prism.min.css">
+    
+
+
+
+    
+        
+            <link rel="stylesheet" href="/dist/main.37ab3f61b95417873748.min.css">
+        
+    
+
+
+
+
+<link rel="canonical" href="/post/creando-paquetes-en-r/"><meta property="og:title" content="Creando paquetes en R" />
+<meta property="og:description" content="Probablemente conoces la enorme utilidad que tiene el crear nuestras propias funciones en R; pasar de tener que escribir la misma rutina cada vez que la necesitamos a tan solo llamarla y aplicarla en donde sea necesario definitivamente nos ayuda a optmimizar nuestros flujos de trabajo.
+Sin embargo, muchas veces nos quedamos atrapados en este paso y entonces vamos acumulando scripts con funciones. Scripts, que en el mejor de los casos, tenemos que sourcear adecuadamente cada vez y que, en el peor de ellos, olvidamos que existen y entonces terminamos reescribiendo nuestras rutinas." />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="/post/creando-paquetes-en-r/" />
+<meta property="article:published_time" content="2020-06-22T00:00:00+00:00" />
+<meta property="article:modified_time" content="2020-06-22T00:00:00+00:00" />
+<meta itemprop="name" content="Creando paquetes en R">
+<meta itemprop="description" content="Probablemente conoces la enorme utilidad que tiene el crear nuestras propias funciones en R; pasar de tener que escribir la misma rutina cada vez que la necesitamos a tan solo llamarla y aplicarla en donde sea necesario definitivamente nos ayuda a optmimizar nuestros flujos de trabajo.
+Sin embargo, muchas veces nos quedamos atrapados en este paso y entonces vamos acumulando scripts con funciones. Scripts, que en el mejor de los casos, tenemos que sourcear adecuadamente cada vez y que, en el peor de ellos, olvidamos que existen y entonces terminamos reescribiendo nuestras rutinas.">
+<meta itemprop="datePublished" content="2020-06-22T00:00:00&#43;00:00" />
+<meta itemprop="dateModified" content="2020-06-22T00:00:00&#43;00:00" />
+<meta itemprop="wordCount" content="1950">
+
+
+
+<meta itemprop="keywords" content="R,RStats,RStatsES," /><meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="Creando paquetes en R"/>
+<meta name="twitter:description" content="Probablemente conoces la enorme utilidad que tiene el crear nuestras propias funciones en R; pasar de tener que escribir la misma rutina cada vez que la necesitamos a tan solo llamarla y aplicarla en donde sea necesario definitivamente nos ayuda a optmimizar nuestros flujos de trabajo.
+Sin embargo, muchas veces nos quedamos atrapados en este paso y entonces vamos acumulando scripts con funciones. Scripts, que en el mejor de los casos, tenemos que sourcear adecuadamente cada vez y que, en el peor de ellos, olvidamos que existen y entonces terminamos reescribiendo nuestras rutinas."/>
+
+</head>
+<body>
+    
+<nav class="navbar navbar-expand-md navbar-light bg-light fixed-top shadow-sm" id="navbar-main-menu">
+    <div class="container">
+        <a class="navbar-brand font-weight-bold" href="/">David Alberto</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#main-menu" aria-controls="main-menu" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="main-menu">
+            <ul class="navbar-nav ml-auto">
+                
+                    <li class="nav-item"><a class="nav-link" href="/">Home</a></li>
+                
+                    <li class="nav-item"><a class="nav-link" href="/about/">About</a></li>
+                
+            
+            </ul>
+        </div>
+    </div>
+</nav>
+
+
+    
+<main class="content-page container pt-7 pb-5">
+    
+    <div class="row">
+        <div class="col">
+            <article>
+                <div class="row justify-content-center">
+                    <div class="col-lg-8">
+                        <div class="meta text-muted mb-3">
+                            <p class="created text-muted text-uppercase font-weight-bold mb-1">June 22, 2020</p>
+                            <span class="mr-2"><i class="fas fa-book-open mr-2"></i>1950 words</span>
+                            <span><i class="fas fa-clock mr-2"></i>10 mins read</span>
+                        </div>
+
+                        <h1>Creando paquetes en R</h1>
+
+                        <ul class="authors list-inline"><li class="list-inline-item mr-3">
+                    <div class="media author"><div class="media-body">
+                            <h5 class="name my-0"><a href="/authors/david/" class="small">David</a>
+                            </h5></div>
+                    </div>
+                </li></ul>
+                    </div>
+                </div><div class="row justify-content-center">
+                    <div class="col-lg-8">
+                        <div class="content">
+                            
+
+
+<p>Probablemente conoces la enorme utilidad que tiene el crear nuestras propias funciones en R; pasar de tener que escribir la misma rutina cada vez que la necesitamos a tan solo <em>llamarla</em> y aplicarla en donde sea necesario definitivamente nos ayuda a optmimizar nuestros flujos de trabajo.</p>
+<p>Sin embargo, muchas veces nos quedamos <em>atrapados</em> en este paso y entonces vamos acumulando scripts con funciones. Scripts, que en el mejor de los casos, tenemos que <em>sourcear</em> adecuadamente cada vez y que, en el peor de ellos, olvidamos que existen y entonces terminamos reescribiendo nuestras rutinas.</p>
+<p>Pues precisamente ese paso adicional que nos permitirá organizar mejor nuestras funciones creadas y poder tenerlas a la mano fácilmente se llama: crear un paquete (sí, como que esos que instalamos del CRAN o de GitHub).</p>
+<p>Crear un paquete nos permitirá:</p>
+<ul>
+<li>Organizar nuestras funciones y saber siempre dónde están.</li>
+<li>Documentarlas para no olvidar qué hacen y cómo se usan.</li>
+<li>Instalarlas en R y así tenerlas siempre a la mano.</li>
+<li>Compartirlas (si así lo deseamos) para facilitarle la vida a alguien.</li>
+<li>Aprender cosas geniales de R, 😉.</li>
+</ul>
+<p>Así que eso es lo que aprenderás en este post/tutorial: a armar un paquete con tus propias funciones.</p>
+<div id="manos-a-la-obra" class="section level3">
+<h3>Manos a la obra</h3>
+<p>N.B. Las instrucciones a continuación consideran que estás usando RStudio como IDE.</p>
+<p>Lo primero que necesitamos es tener nuestras funciones ya creadas. En este ejemplo construiremos un pequeño paquete para descargar opiniones de productos de Amazon y crear nubes de palabras con ellas.</p>
+<p>Nuestro script de funciones luce así:</p>
+<details>
+<p><Summary>Mostrar</Summary></p>
+<pre class="r"><code>library(polite)
+library(rvest)
+library(stringr)
+library(tm)
+library(wordcloud)
+library(wordcloud2)
+
+get_reviews &lt;- function(id, pages){
+  webpage &lt;- paste0(&quot;https://www.amazon.com.mx/product-reviews/&quot;, id)
+  session &lt;- bow(webpage, force = TRUE)
+  reviews_list &lt;- list()
+  
+  for (i in 1:pages) {
+    reviews_list[[i]] &lt;- scrape(session, query = list(pageNumber=i)) %&gt;% 
+      html_nodes(&quot;[class=&#39;a-size-base review-text review-text-content&#39;]&quot;) %&gt;% 
+      html_text()
+  }
+  
+  reviews &lt;- unlist(reviews_list)
+  
+  return(reviews)
+}
+
+clean_reviews &lt;- function(reviews){
+  
+  cleaned &lt;- str_replace_all(reviews, &quot;[\r\n]&quot;, &quot;&quot;) %&gt;% 
+    str_replace_all(., &quot;[.]&quot;, &quot; &quot;) %&gt;% 
+    str_replace_all(., &quot;[,]&quot;, &quot; &quot;) %&gt;% 
+    str_replace_all(., &quot;[;]&quot;, &quot; &quot;) %&gt;% 
+    tolower() %&gt;% 
+    trimws() %&gt;% 
+    paste(collapse = &quot; &quot;)
+  
+  return(cleaned)
+    
+}
+
+reviews_wordcloud &lt;- function(cleaned_reviews){
+  doc &lt;- Corpus(VectorSource(cleaned_reviews))
+  doc &lt;- tm_map(doc, removeWords, stopwords(kind = &quot;spanish&quot;))
+  m &lt;- as.matrix(TermDocumentMatrix(doc))
+  palabras &lt;- sort(rowSums(m), decreasing = TRUE)
+  df &lt;- data.frame(palabra = names(palabras), freq = palabras)
+  
+  wordcloud(words = df$palabra, freq = df$freq, rot.per = 0, colors = brewer.pal(12, &quot;Paired&quot;))
+}
+
+reviews_wordcloud2 &lt;- function(cleaned_reviews){
+  doc &lt;- Corpus(VectorSource(cleaned_reviews))
+  doc &lt;- tm_map(doc, removeWords, stopwords(kind = &quot;spanish&quot;))
+  m &lt;- as.matrix(TermDocumentMatrix(doc))
+  palabras &lt;- sort(rowSums(m), decreasing = TRUE)
+  df &lt;- data.frame(palabra = names(palabras), freq = palabras)
+  
+  wordcloud2(data = df, color = &quot;random-dark&quot;, rotateRatio = 0)
+}</code></pre>
+</details>
+<p>No entraré a los detalles de cada función pero lo importante es saber lo siguiente:</p>
+<ol style="list-style-type: decimal">
+<li>Tenemos 4 funciones, una para descargar las opiniones, una para <em>limpiarlas</em> y dos para crear las nubes de palabras.</li>
+<li>Nuestras funciones usan otras funciones de otros paquetes de R (esto será importante en un paso más adelante).</li>
+</ol>
+<p>Ahora sí, a crear el paquete.</p>
+<p>N.B. Si estás familiarizado con git y deseas que tu paquete este en un repositorio te recomiendo seguir primero <a href="#compartir">estos pasos.</a></p>
+<div id="section" class="section level4">
+<h4>1</h4>
+<p>Lo primero que necesitaremos es una carpeta que almacenará todo, lo ideal es que esta carpeta se llame como el paquete, en este caso le llamaremos <code>amazonReviews</code>.</p>
+<p>Una vez hecho esto, crearemos un proyecto de R en ese directorio.</p>
+<p><img src="/post/2020-06-22-creando-paquetes-en-r.es_files/RProj.png" /></p>
+<p>Adicionalemte necesitamos un par de paquetes que nos harán la vida más fácil, estos son: <code>devtools</code>, <code>usethis</code> y <code>here</code> (este último no es tan necesario).</p>
+</div>
+<div id="pasos" class="section level4">
+<h4>2</h4>
+<p>Ahora tenemos que hacerle saber a R que crearemos un paquete, para ello corremos en la consola la siguiente función:</p>
+<pre class="r"><code>usethis::create_package(here::here())
+
+# usethis::create_package(getwd()) # en el caso de no haber instalado el paquete here</code></pre>
+<p>Al hacerlo nos saldrá una pregunta en la consola que nos pedirá decidir si debemos <em>sobreescribir</em> el archivo RProj que había sido creado en el paso 1, decimos que sí.</p>
+<p>Notemos que una vez hecho lo anterior se habrá habilitado un pestaña llamada <strong>Build</strong> en el recuadro del <em>Environment</em> y además se habrán creado automáticamente algunos archivos en el directorio del proyecto:</p>
+<div class="figure">
+<img src="/post/2020-06-22-creando-paquetes-en-r.es_files/Rpack01.png" alt="" />
+<p class="caption">archivos creados automáticamente</p>
+</div>
+</div>
+<div id="section-1" class="section level4">
+<h4>3</h4>
+<p>Ahora lo que haremos será llenar el archivo <strong>DESCRIPTION</strong> con el título del paquete, nuestra información en la sección <code>Authors@R</code> y la descripción.</p>
+<p>N.B. Por ahora no modificaremos el campo <code>License</code>, ya llegará el momento.</p>
+<pre class="dcf"><code>Package: amazonReviews
+Title: Scrapes amazon reviews
+Version: 0.0.0.9000
+Authors@R: 
+    person(given = &quot;David&quot;,
+           family = &quot;Mateos&quot;,
+           role = c(&quot;aut&quot;, &quot;cre&quot;),
+           email = &quot;davidmateosmo@gmail.com&quot;)
+Description: Provides a couple of functions to scrape reviews from Amazon MX and visualise them in wordclouds.
+License: `use_mit_license()`, `use_gpl3_license()` or friends to
+    pick a license
+Encoding: UTF-8
+LazyData: true
+Roxygen: list(markdown = TRUE)
+RoxygenNote: 7.1.0</code></pre>
+</div>
+<div id="section-2" class="section level4">
+<h4>4</h4>
+<p>Ahora toca el turno de las funciones.</p>
+<p>Tenemos que ir <em>llenando</em> el paquete con nuestras funciones, para ello solo debemos crear un nuevo script y pegar nuestra función.</p>
+<p>Antes de guardarla tenemos que modificar un poco este script, empezaremos por documentarla <em>a la R</em>. Esta parte será bastante sencilla pues usaremos a nuestro favor una característica de devtools que convierte cierto tipo de comentarios a la documentación estándar de R (acá usamos la magia de un paquete llamado <code>roxygen2</code>).</p>
+<p>Estos comentarios especiales son precedidos por los caractéres <code>#'</code>:</p>
+<pre class="r"><code>#&#39; Scrapes Amazon MX reviews
+#&#39;
+#&#39; @param id The product id, you can get it from the amazon URL
+#&#39; @param pages Number of pages to scrape data from
+#&#39; @export
+
+get_reviews &lt;- function(id, pages){
+  
+  webpage &lt;- paste0(&quot;https://www.amazon.com.mx/product-reviews/&quot;, id)
+  session &lt;- bow(webpage, force = TRUE)
+  
+  reviews_list &lt;- list()
+  
+  for (i in 1:pages) {
+    reviews_list[[i]] &lt;- scrape(session, query = list(pageNumber=i)) %&gt;% 
+      html_nodes(&quot;[class=&#39;a-size-base review-text review-text-content&#39;]&quot;) %&gt;% 
+      html_text()
+  }
+  
+  reviews &lt;- unlist(reviews_list)
+  
+  return(reviews)
+}</code></pre>
+<p>Notemos los comentarios con los indicadores <code>@param</code> y <code>@export</code>, éstos le dicen a R cómo tratar esas partes de la documentación, e.g. <code>@param</code> le indica a R que estamos explicando un parámetro de la función y pondrá esta información en un lugar específico de la documentación.</p>
+<p>Por otro lado <code>@export</code> le dice a R que le debe permitir al usuario usar esa función, este parámetro es importantísimo y casi siempre lo usaremos.</p>
+</div>
+<div id="section-3" class="section level4">
+<h4>5</h4>
+<p>Ahora nos encargaremos de las dependencias de la función, como mencionamos al inicio, nuestras funciones usan otras funciones de otros paquetes de R por lo que hay que hacer que R sepa cuáles son y de qué paquetes.</p>
+<p>Esta función en particular (<code>get_reviews</code>) usa funciones de dos paquetes, a saber <code>polite</code> y <code>rvest</code>, para <em>avisarle</em> a R sobre esto debemos correr la siguiente función:</p>
+<pre class="r"><code>usethis::use_package(&quot;polite&quot;)
+
+# √ Setting active project to &#39;C:/Users/David Alberto MMO/Documents/Workshops/Rpackages/amazonReviews&#39;
+# √ Adding &#39;polite&#39; to Imports field in DESCRIPTION
+# * Refer to functions with `polite::fun()`
+
+
+usethis::use_package(&quot;rvest&quot;)
+
+# √ Adding &#39;rvest&#39; to Imports field in DESCRIPTION
+# * Refer to functions with `rvest::fun()`</code></pre>
+<p>Notemos que R nos avisa cómo debemos usar la funciones de cada paquete, esto es, en lugar de solo usar la función debemos seguir la estructura: <code>nombredepaquete::función</code>, así que debemos modificar la función para que siga esta regla:</p>
+<pre class="r"><code>#&#39; Scrapes Amazon MX reviews
+#&#39;
+#&#39; @param id The product id, you can get it from the amazon URL
+#&#39; @param pages Number of pages to scrape data from
+#&#39; @export
+
+get_reviews &lt;- function(id, pages){
+  
+  webpage &lt;- paste0(&quot;https://www.amazon.com.mx/product-reviews/&quot;, id)
+  session &lt;- polite::bow(webpage, force = TRUE)
+  
+  reviews_list &lt;- list()
+  
+  for (i in 1:pages) {
+    reviews_list[[i]] &lt;- polite::scrape(session, query = list(pageNumber=i)) %&gt;% 
+      rvest::html_nodes(&quot;[class=&#39;a-size-base review-text review-text-content&#39;]&quot;) %&gt;% 
+      rvest::html_text()
+  }
+  
+  reviews &lt;- unlist(reviews_list)
+  
+  return(reviews)
+}</code></pre>
+<p>Una vez hechas estas modificaciones procedemos a guardar el script con el nombre de la función.</p>
+<p>Ahora bien, para saber que todo se ha hecho correctamente iremos a la pestaña <strong>Build</strong> y daremos click en el botón <strong>check</strong> o bien, corremos la siguiente función:</p>
+<pre class="r"><code>devtools::check()</code></pre>
+<p>Al final veremos algo como lo siguiente:</p>
+<pre class="r"><code>&gt; checking DESCRIPTION meta-information ... WARNING
+  Non-standard license specification:
+    `use_mit_license()`, `use_gpl3_license()` or friends to pick a
+    license
+  Standardizable: FALSE
+
+&gt; checking R code for possible problems ... NOTE
+  get_reviews: no visible global function definition for &#39;%&gt;%&#39;
+  Undefined global functions or variables:
+    %&gt;%
+
+0 errors v | 1 warning x | 1 note x</code></pre>
+<p>Esta retroalimentación que R nos da nos ayudará a saber si estamos siguiendo todas las reglas correctamente o si debemos modificar algo, en este caso hay cosas que resolver.</p>
+<p>Por un lado tenemos un <code>WARNING</code> que nos indica que la licencia no es correcta, ignoremos esto pues pronto nos encargaremos de ello. Por otro lado, generamos un <code>NOTE</code> que nos indica que no definimos una función que estamos usando, esta es <code>%&gt;%</code>.</p>
+<p>Particularmente, cuando hagamos paquetes que usen el increíble pipe de <code>magrittr</code> debemos correr la siguiente función:</p>
+<pre class="r"><code>usethis::use_pipe()</code></pre>
+<p>Hacemos el <strong>check</strong> nuevamente y ese <code>NOTE</code> habrá desaparecido (aunque sigue presente el warning).</p>
+<p>Ahora tenemos que correr la siguiente función para transformar nuestros comentarios tipo <code>roxygen2</code> a la documentación estándar de R:</p>
+<pre class="r"><code>devtools::document()</code></pre>
+</div>
+<div id="section-4" class="section level4">
+<h4>6</h4>
+<p>Lo que sigue es repetir los pasos 4 y 5 con cada una de las funciones restantes, haciendo <strong>check</strong> constantemente para asegurarnos que vamos por buen camino.</p>
+</div>
+<div id="section-5" class="section level4">
+<h4>7</h4>
+<p>Con todas las funciones configuradas, estamos aun paso de tener nuestro paquete listo.</p>
+<p>Ahora sí, hay que encargarnos de la licencia, ésta nos servirá para <em>proteger</em> nuestro trabajo y hacerle saber a las demás personas cómo puede usarlo.</p>
+<p>Tenemos 7 licencias posibles, las cuales recomiendo revisar a detalle para saber cual es la que mejor aplica a tu proyecto:</p>
+<ul>
+<li><a href="https://creativecommons.org/publicdomain/zero/1.0/">CC0</a>: dedicated to public domain. Appropriate for data packages.</li>
+<li><a href="https://choosealicense.com/licenses/mit/">MIT</a>: simple and permissive.</li>
+<li><a href="https://choosealicense.com/licenses/apache-2.0/">Apache 2.0</a>: provides patent protection.</li>
+<li><a href="https://choosealicense.com/licenses/gpl-3.0/">GPL v3</a>: requires sharing of improvements.</li>
+<li><a href="https://choosealicense.com/licenses/agpl-3.0/">AGPL v3</a>: requires sharing of improvements.</li>
+<li><a href="https://choosealicense.com/licenses/lgpl-3.0/">LGPL v3</a>: requires sharing of improvements.</li>
+<li><a href="https://creativecommons.org/licenses/by/4.0/">CCBY 4.0</a>: Free to share and adapt, must give appropriate credit. Appropriate for data packages.</li>
+</ul>
+<p>En este ejemplo usaremos la licencia <strong>MIT</strong>:</p>
+<pre class="r"><code>usethis::use_mit_license(&quot;David Mateos&quot;) # En lugar de mi nombre deberás poner el tuyo ;D</code></pre>
+<p>Damos <strong>Check</strong> una vez más y debemos ver lo siguiente:</p>
+<pre class="r"><code>-- R CMD check results --------------------------- amazonReviews 0.0.0.9000 ----
+Duration: 18.7s
+
+0 errors v | 0 warnings v | 0 notes v
+
+R CMD check succeeded</code></pre>
+<p>Eso significa que todo funciona a la perfección.</p>
+</div>
+</div>
+<div id="instalando-el-paquete." class="section level3">
+<h3>Instalando el paquete.</h3>
+<p>Finalmente podemos instalar nuestro paquete en nuestra máquina, para ello debemos dar click en <em>Install and Restart</em> de la pestaña <strong>Build</strong>.</p>
+<p>Y listo, una vez terminado el proceso podemos usar nuestro paquete y sus funciones como cualquier otro.</p>
+</div>
+<div id="compartir" class="section level3">
+<h3>Compartiendo el paquete</h3>
+<p>¿Qué tenemos que hacer si queremos compartir el paquete con alguien?</p>
+<p>Tenemos dos opciones, una de ellas es generar una carpeta comprimida que podremos enviar y que se puede instalar <em>fácilmente</em>.</p>
+<p>Para ello basta con dar click en <strong>More</strong> -&gt; <strong>Build Source Package</strong> de la pestaña <strong>Build</strong>, automáticamente se generará el archivo necesario que podemos compartir e instalar con la siguiente función:</p>
+<pre class="r"><code>devtools::install_local(&quot;path/to/source/package&quot;)</code></pre>
+<p>La otra opción es poner nuestro paquete en un repositorio de GitHub, con el cual las personas podrán instarlarlo remotamente como cualquier otro.</p>
+<p>Para ello debemos empezar por crear un nuevo repositorio en GitHub asegurandonos de marcar la casilla <strong>Initialize this repository with a README</strong>.</p>
+<p>Posteriormente, en lugar de crear un proyecto de RStudio en una carpeta local, debemos crear un proyecto desde <em>Control de versiones</em></p>
+<p><img src="/post/2020-06-22-creando-paquetes-en-r.es_files/rpackgit.png" /></p>
+<p>Y listo con esto pasos terminados ahora sí puedes <a href="#pasos">continuar con la creación del paquete.</a></p>
+<p>Cuando hayas terminado y hayas hecho push de todo el paquete éste se podrá instalar con la siguiente función:</p>
+<pre class="r"><code>devtools::install_github(&quot;link/alrepositorio&quot;) # sin la parte: github.com</code></pre>
+</div>
+<div id="recapitulación" class="section level3">
+<h3>Recapitulación</h3>
+<p>Como puedes ver el proceso es bastante sencillo y podemos resumirlo en los siguientes pasos:</p>
+<ol style="list-style-type: decimal">
+<li>Crear el paquete en una carpeta local o clonada de un repositorio.</li>
+<li>Llenar el archivo <strong>DESCRIPTION</strong>.</li>
+<li>Escribir y documentar las funciones cuidando las dependencias que existan.</li>
+<li>Hacer checks continuamente para garantizar que todo está correcto.</li>
+<li>Escoger una licencia (no este paso bien puede hacerse junto con el 2 si ya lo tienes claro).</li>
+<li>Instalar y compartir.</li>
+</ol>
+<p>Ojalá que este tutorial te ayude a dar ese paso que te permita empezar a crear paquetes tanto para tu uso personal como para compartirlo con la comunidad de R.</p>
+</div>
+
+                        </div><div class="tags my-3"><a class="badge badge-pill badge-light border mr-2" href="/tags/r">
+                                    <i class="fas fa-tag mr-2"></i>R
+                                </a><a class="badge badge-pill badge-light border mr-2" href="/tags/rstats">
+                                    <i class="fas fa-tag mr-2"></i>RStats
+                                </a><a class="badge badge-pill badge-light border mr-2" href="/tags/rstatses">
+                                    <i class="fas fa-tag mr-2"></i>RStatsES
+                                </a></div><ul class="share nav my-3 justify-content-end">
+        <li class="nav-item">
+            <a class="nav-link" target="_blank" href="https://twitter.com/intent/tweet?url=%2fpost%2fcreando-paquetes-en-r%2f&text=Creando%20paquetes%20en%20R">
+              <i class="fa-fw fab fa-twitter"></i>
+          </a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" target="_blank" href="https://www.linkedin.com/shareArticle?url=%2fpost%2fcreando-paquetes-en-r%2f&title=Creando%20paquetes%20en%20R">
+                <i class="fa-fw fab fa-linkedin-in"></i>
+            </a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" target="_blank" href="https://www.facebook.com/sharer.php?u=%2fpost%2fcreando-paquetes-en-r%2f&t=Creando%20paquetes%20en%20R">
+                <i class="fa-fw fab fa-facebook-f"></i>
+            </a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" target="_blank" href="https://reddit.com/submit?url=%2fpost%2fcreando-paquetes-en-r%2f&title=Creando%20paquetes%20en%20R">
+                <i class="fa-fw fab fa-reddit-alien"></i>
+            </a>
+        </li>
+    </nav>
+                    </div>
+                </div>
+
+                <div class="row justify-content-center">
+                    <div class="col-lg-8">
+                        
+                    </div>
+                </div><div class="row justify-content-center my-3">
+                    <div class="col-lg-8">
+                        <div id="commento"></div>
+                        <script src="https://commento.io"></script>
+                    </div>
+                </div></article>
+        </div>
+    </div>
+
+    
+</main>
+
+
+    <footer class="footer text-center bg-dark py-6">
+    <div class="container">
+        <div class="row">
+            <div class="col">
+                <ul class="list-inline">
+                    <li class="list-inline-item"><a href="/index.xml" rel="alternate" type="application/rss+xml" class="icons d-block">
+                                    <span class="fa-stack fa-lg">
+                                        <i class="fa fa-circle fa-stack-2x"></i>
+                                        <i class="fa fa-rss fa-stack-1x fa-inverse"></i>
+                                    </span>
+                                </a></li><li class="list-inline-item">
+                        <a href="mailto:davidmateosmo@gmail.com" class="icons d-block">
+                            <span class="fa-stack fa-lg">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa fa-envelope fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li><li class="list-inline-item">
+                            <a href="https://github.com/alberto-mateos-mo" class="icons d-block">
+                                <span class="fa-stack fa-lg">
+                                    <i class="fa fa-circle fa-stack-2x"></i>
+                                    <i class="fab fa-github fa-stack-1x fa-inverse"></i>
+                                </span>
+                            </a>
+                        </li><li class="list-inline-item">
+                            <a href="https://www.linkedin.com/in/davidalbertommo/" class="icons d-block">
+                                <span class="fa-stack fa-lg">
+                                    <i class="fa fa-circle fa-stack-2x"></i>
+                                    <i class="fab fa-linkedin fa-stack-1x fa-inverse"></i>
+                                </span>
+                            </a>
+                        </li><li class="list-inline-item">
+                            <a href="https://twitter.com/deividmmo" class="icons d-block">
+                                <span class="fa-stack fa-lg">
+                                    <i class="fa fa-circle fa-stack-2x"></i>
+                                    <i class="fab fa-twitter fa-stack-1x fa-inverse"></i>
+                                </span>
+                            </a>
+                        </li>
+                </ul>
+
+                <p class="text-muted">
+                    
+                        Copyright &copy; David Alberto 2020
+                    
+                </p>
+
+                <p class="text-muted">
+                Powered by <a href="https://gohugo.io" target="_blank">Hugo</a> with <a href="https://github.com/puresyntax71/hugo-theme-chunky-poster" target="_blank">Chunky Poster</a>.
+                </p>
+            </div>
+        </div>
+    </div>
+</footer>
+
+    
+    
+        
+            <script src="/dist/main.d608eadfe5ac0688902e.min.js"></script>
+        
+    
+
+
+
+<script>
+    window.Prism = window.Prism || {};
+    window.Prism.manual = true;
+</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.17.1/components/prism-core.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.17.1/plugins/autoloader/prism-autoloader.min.js"></script>
+
+
+
+
+
+
+    
+<script type="application/javascript">
+var doNotTrack = false;
+if (!doNotTrack) {
+	(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+	(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+	m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+	})(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+	ga('create', 'UA-XXXX', 'auto');
+	
+	ga('send', 'pageview');
+}
+</script>
+
+</body>
+</html>

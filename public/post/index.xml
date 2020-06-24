@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Posts on David Alberto</title>
+    <link>/post/</link>
+    <description>Recent content in Posts on David Alberto</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en</language>
+    <lastBuildDate>Mon, 22 Jun 2020 00:00:00 +0000</lastBuildDate>
+    
+	<atom:link href="/post/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>Creando paquetes en R</title>
+      <link>/post/creando-paquetes-en-r/</link>
+      <pubDate>Mon, 22 Jun 2020 00:00:00 +0000</pubDate>
+      
+      <guid>/post/creando-paquetes-en-r/</guid>
+      <description>Probablemente conoces la enorme utilidad que tiene el crear nuestras propias funciones en R; pasar de tener que escribir la misma rutina cada vez que la necesitamos a tan solo llamarla y aplicarla en donde sea necesario definitivamente nos ayuda a optmimizar nuestros flujos de trabajo.
+Sin embargo, muchas veces nos quedamos atrapados en este paso y entonces vamos acumulando scripts con funciones. Scripts, que en el mejor de los casos, tenemos que sourcear adecuadamente cada vez y que, en el peor de ellos, olvidamos que existen y entonces terminamos reescribiendo nuestras rutinas.</description>
+    </item>
+    
+  </channel>
+</rss>
