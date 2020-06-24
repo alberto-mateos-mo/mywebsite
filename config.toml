@@ -58,7 +58,7 @@ author = "authors"
 
 [markup]
   [markup.highlight]
-    codeFences = false
+    codeFences = true
 
 [services]
   [services.instagram]
