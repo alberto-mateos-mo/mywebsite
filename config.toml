@@ -1,4 +1,4 @@
-baseURL = "https://example.com"
+baseURL = "devidmateos.netlify.app"
 title = "David Alberto"
 copyright = ""
 paginate = 2
@@ -32,7 +32,7 @@ author = "authors"
 
 [params]
   author = "David Mateos"
-  description = "A personal blog, just because."
+  description = "A personal data science blog."
   homepageImage = "/images/my_homepage.png"
   share = true
   showLanguageSwitcher = false
