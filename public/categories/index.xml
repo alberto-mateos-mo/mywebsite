@@ -2,21 +2,21 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Categories on David Alberto</title>
-    <link>/devidmateos.netlify.app/categories/</link>
+    <link>/categories/</link>
     <description>Recent content in Categories on David Alberto</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en</language>
     <lastBuildDate>Mon, 22 Jun 2020 00:00:00 +0000</lastBuildDate>
     
-	<atom:link href="/devidmateos.netlify.app/categories/index.xml" rel="self" type="application/rss+xml" />
+	<atom:link href="/categories/index.xml" rel="self" type="application/rss+xml" />
     
     
     <item>
       <title>Tutorial</title>
-      <link>/devidmateos.netlify.app/categories/tutorial/</link>
+      <link>/categories/tutorial/</link>
       <pubDate>Mon, 22 Jun 2020 00:00:00 +0000</pubDate>
       
-      <guid>/devidmateos.netlify.app/categories/tutorial/</guid>
+      <guid>/categories/tutorial/</guid>
       <description></description>
     </item>
     

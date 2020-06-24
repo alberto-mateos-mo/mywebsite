@@ -3,83 +3,83 @@
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   
   <url>
-    <loc>/devidmateos.netlify.app/</loc>
+    <loc>/</loc>
     <lastmod>2020-06-22T00:00:00+00:00</lastmod>
   </url>
   
   <url>
-    <loc>/devidmateos.netlify.app/authors/</loc>
+    <loc>/authors/</loc>
     <lastmod>2020-06-22T00:00:00+00:00</lastmod>
   </url>
   
   <url>
-    <loc>/devidmateos.netlify.app/categories/</loc>
+    <loc>/categories/</loc>
     <lastmod>2020-06-22T00:00:00+00:00</lastmod>
   </url>
   
   <url>
-    <loc>/devidmateos.netlify.app/post/creando-paquetes-en-r/</loc>
+    <loc>/post/creando-paquetes-en-r/</loc>
     <lastmod>2020-06-22T00:00:00+00:00</lastmod>
   </url>
   
   <url>
-    <loc>/devidmateos.netlify.app/authors/david/</loc>
+    <loc>/authors/david/</loc>
     <lastmod>2020-06-22T00:00:00+00:00</lastmod>
   </url>
   
   <url>
-    <loc>/devidmateos.netlify.app/post/</loc>
+    <loc>/post/</loc>
     <lastmod>2020-06-22T00:00:00+00:00</lastmod>
   </url>
   
   <url>
-    <loc>/devidmateos.netlify.app/tags/r/</loc>
+    <loc>/tags/r/</loc>
     <lastmod>2020-06-22T00:00:00+00:00</lastmod>
   </url>
   
   <url>
-    <loc>/devidmateos.netlify.app/tags/rstats/</loc>
+    <loc>/tags/rstats/</loc>
     <lastmod>2020-06-22T00:00:00+00:00</lastmod>
   </url>
   
   <url>
-    <loc>/devidmateos.netlify.app/tags/rstatses/</loc>
+    <loc>/tags/rstatses/</loc>
     <lastmod>2020-06-22T00:00:00+00:00</lastmod>
   </url>
   
   <url>
-    <loc>/devidmateos.netlify.app/tags/</loc>
+    <loc>/tags/</loc>
     <lastmod>2020-06-22T00:00:00+00:00</lastmod>
   </url>
   
   <url>
-    <loc>/devidmateos.netlify.app/categories/tutorial/</loc>
+    <loc>/categories/tutorial/</loc>
     <lastmod>2020-06-22T00:00:00+00:00</lastmod>
   </url>
   
   <url>
-    <loc>/devidmateos.netlify.app/about/</loc>
+    <loc>/about/</loc>
     <lastmod>2020-05-31T00:00:00+00:00</lastmod>
   </url>
   
   <url>
-    <loc>/devidmateos.netlify.app/authors/hugo-authors/</loc>
+    <loc>/authors/hugo-authors/</loc>
   </url>
   
   <url>
-    <loc>/devidmateos.netlify.app/authors/jane-smith/</loc>
+    <loc>/authors/jane-smith/</loc>
   </url>
   
   <url>
-    <loc>/devidmateos.netlify.app/authors/john-doe/</loc>
+    <loc>/authors/john-doe/</loc>
   </url>
   
   <url>
-    <loc>/devidmateos.netlify.app/tags/index/</loc>
+    <loc>/tags/index/</loc>
   </url>
   
   <url>
-    <loc>/devidmateos.netlify.app/series/</loc>
+    <loc>/series/</loc>
   </url>
   
 </urlset>
