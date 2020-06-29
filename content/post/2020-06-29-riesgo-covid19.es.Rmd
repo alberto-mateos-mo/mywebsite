@@ -1,0 +1,177 @@
+---
+title: Factores de riesgo COVID-19
+author: Deivid
+date: '2020-06-29'
+slug: riesgo-covid19
+categories:
+  - Post
+tags:
+  - R
+  - RStats
+  - RStatsES
+images: []
+authors: []
+---
+
+```{r setup, echo=FALSE, message=FALSE, warning=FALSE}
+library(datoscovid19mx)
+library(dplyr)
+library(magrittr)
+library(ROCR)
+library(caTools)
+library(ggplot2)
+```
+
+
+En este post analizaremos los factores de riesgo que incrementan la probabilidad de hospitalización en los casos positivos a SARS-CoV-2 en México. 
+
+Para ello, usaremos una técnica básica, no por la dificultad sino por ser una de las primeras que se aprenden para el análisis estadístico de datos, llamada __regresión logística__.
+
+Explicaremos brevemente los datos a usar, crearemos el modelo y finalmente presentaremos los hallazgos.
+
+Mostraremos, además, cómo usar el modelo para estimar la probabilidad de hospitalización de un nuevo registro.
+
+### Datos
+
+Puedes ir directamente a los hallazgos [acá](#resultados).
+
+La información usada es la que se reporta diariamente por la [Dirección General de Epidemiología](https://www.gob.mx/salud/acciones-y-programas/direccion-general-de-epidemiologia).
+
+Los datos abiertos se pueden descargar en [este sitio](https://www.gob.mx/salud/documentos/datos-abiertos-152127) en formato csv o bien podemos instalarlos directamente en R usando:
+
+```{r, eval=FALSE}
+# install.packages("devtools")
+devtools::install_github("alberto-mateos-mo/datoscovid19mx")
+```
+
+La información considera a todas las personas a quienes les ha sido aplicada la prueba por lo que nos enfocaremos únicamente en aquellos con resultados positivo.
+
+La Dirección General de Epidemiologia proporciona, además del resultado de la prueba, información demográfica y de salud de cada caso registrado, usaremos esa información como las covariables del modelo y la variable `tipo_paciente` como la variable a modelar, ésta identifica a cada registro como _Ambulatorio_ y _Hospitalizado_.
+
+Las variables: neumonia, diabetes, epoc, asma, inmusupr, hipertension, cardiovascular, obesidad, renal_cronica, y tabaquismo, indican si el caso presenta esa condición o no. La variable otra_com indica si el caso presenta alguna otra comorbilidad.
+
+Algo a considerar es que estas variables, además de los campos _si_ y _no_, contienen las opciones _no aplica_, _se ignora_ y _no especificado_; estas últimas las codificaremos como _no_.
+
+### Modelo de riesgo de hospitalización
+
+Como ya mencionabamos, usaremos el modelo de regresión logística para analizar el impacto de cada factor de riesgo en la probabilidad de hospitalización.
+
+N.B. En un primer modelo observamos que la variable que indica presencia de enfermedad cardiovascular no es estadísticamente significativa para el riesgo de hospitalización y por ello fue removida del análisis.
+
+```{r echo=FALSE}
+datos <- covid_clean %>% 
+  filter(resultado == "Positivo SARS-CoV-2") %>% 
+  select(tipo_paciente, sexo, edad, neumonia, diabetes, epoc, asma, inmusupr, hipertension, otra_com, obesidad, renal_cronica, tabaquismo)
+
+datos %<>% 
+  mutate_at(vars("neumonia", "diabetes", "epoc", "asma", "inmusupr", 
+                 "hipertension", "otra_com", "obesidad", "renal_cronica", "tabaquismo"),
+            ~ifelse(.=="SI", "SI", "NO"))
+
+datos$tipo_paciente <- ifelse(datos$tipo_paciente == "HOSPITALIZADO", 1, 0)
+```
+
+```{r, echo=FALSE}
+set.seed(2806)
+muestra <- sample.split(datos, SplitRatio = 0.75)
+train <- subset(datos, muestra == TRUE)
+test <- subset(datos, muestra == FALSE)
+```
+
+```{r, echo=FALSE}
+modelo <- glm(tipo_paciente~., data = train, family = "binomial")
+summary(modelo)
+```
+
+```{r, echo=FALSE}
+p <- predict(modelo, test[,-1], type = "response")
+pr <- prediction(p, test$tipo_paciente)
+prf <- performance(pr, measure = "tpr", x.measure = "fpr")
+```
+
+```{r, echo=FALSE}
+data.frame(x = prf@x.values[[1]], y = prf@y.values[[1]]) %>%
+  ggplot()+
+  geom_line(aes(x, y), colour = "#1e1e1e", size = 2)+
+  theme_minimal()+
+  labs(x = "FALSE POSITIVE RATE", y = "TRUE POSITIVE RATE")+
+  ggtitle("ROC curve")
+```
+
+El modelo muestra que todas las covariables incluidas son estadísticamente significativas para riesgo de hospitalización y la validación confirma que éste es bastante robusto.
+
+#### Factores de riesgo
+
+A partir de los coeficientes del modelo, también conocidos como logits, podemos identificar aquellas características con un impacto positivo, _ceteris paribus_, en la probabilidad de hospitalización.
+
+Como _regla de dedo_, los coeficientes negativos tienen asociada una probabilidad de hospitalización menor al 50% y los coeficientes positivos, mayor al 50%.
+
+En este sentido, las características con mayor impacto al riesgo de hospitalización son: presencia de neumonía, diabetes, epoc, inmunosupresión, hipertensión, obesidad, enfermedad renal crónica, otras comorbilidades y edad avanzada.
+
+Por el contrario, las características con menor riesgo de hospitalización son: asma y tabaquismo.
+
+En cuanto al sexo del paciente, las mujeres, en comparación con los hombres, tienen menor riesgo de hospitalización.
+
+#### Estimación de riesgo de hospitalización.
+
+El modelo anterior además de ayudarnos a entender qué características derivan en un mayor riesgo de hospitalización, también es útil como un modelo predictivo, el cual, dadas las características de un nuevo caso, nos dará la probabilidad que este tiene de ser hospitalizado.
+
+Por el momento mostraremos un par de ejemplos pero en un post próximo mostraremos cómo diseñar una calculadora de riesgo usando este modelo y el :package: shiny.
+
+Supongamos un caso positivo con las siguientes características:
+
+- Sexo: hombre
+- Edad: 30
+- Neumonia: no
+- Diabetes: no
+- Epoc: no
+- Asma: no
+- Inmunosupresión: no
+- Hipertensión: no
+- Obesidad: si
+- Enfermedad renal crónica: no
+- Otra comorbilidad: no
+- Tabaquismo: si
+
+```{r, echo=FALSE}
+nuevo_caso <- data.frame(sexo = "HOMBRE", edad = 30, neumonia = "NO", diabetes = "NO", epoc = "NO", asma = "NO", inmusupr = "NO", hipertension = "NO", otra_com = "NO", obesidad = "SI", renal_cronica = "NO", tabaquismo = "SI")
+```
+
+Esta persona tendría una probabilidad de `r scales::percent(predict(modelo, nuevo_caso, type = "response"))` de ser hospitalizada, en el caso de contraer el virus SARS-CoV-2.
+
+__¿Cómo se compararía el riesgo con una persona similar pero que además tenga diabetes?__
+
+```{r, echo=FALSE}
+nuevo_caso2 <- data.frame(sexo = "HOMBRE", edad = 30, neumonia = "NO", diabetes = "SI", epoc = "NO", asma = "NO", inmusupr = "NO", hipertension = "NO", otra_com = "NO", obesidad = "SI", renal_cronica = "NO", tabaquismo = "SI")
+```
+
+La probabilidad de hospitalización sería de `r scales::percent(predict(modelo, nuevo_caso2, type = "response"))`, esto es, el hecho de tener diabetes en esta persona derivó en un incremento de `r scales::percent(predict(modelo, nuevo_caso2, type = "response")-predict(modelo, nuevo_caso, type = "response"))`.
+
+__¿Y si no tuviera obesidad?__
+
+```{r, echo=FALSE}
+nuevo_caso <- data.frame(sexo = "HOMBRE", edad = 30, neumonia = "NO", diabetes = "SI", epoc = "NO", asma = "NO", inmusupr = "NO", hipertension = "NO", otra_com = "NO", obesidad = "NO", renal_cronica = "NO", tabaquismo = "SI")
+```
+
+En este caso la probabilidad sería de: `r scales::percent(predict(modelo, nuevo_caso, type = "response"))`.
+
+### Hallazgos {#resultados}
+
+El modelo creado arrojó que las variables con mayor impacto al riesgo de hospitalización por SARS-CoV-2 en México son (en orden de importancia):
+
+- Neumonía
+- Enfermedad renal crónica
+- Inmunosupresión
+- Otra comorbilidad
+- Diabetes
+- EPOC
+- Hipertensión
+- Obesidad
+- Edad
+
+Aquellas variables con un menor impacto al riesgo de hospitalización son:
+
+- Sexo femenino
+- Asma
+- Tabaquismo
+
