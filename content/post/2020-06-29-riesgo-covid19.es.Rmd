@@ -33,7 +33,7 @@ Mostraremos, además, cómo usar el modelo para estimar la probabilidad de hospi
 
 ### Datos
 
-Puedes ir directamente a los hallazgos [acá](#resultados).
+Puedes ir directamente a los hallazgos dando click [aquí.](#resultados).
 
 La información usada es la que se reporta diariamente por la [Dirección General de Epidemiología](https://www.gob.mx/salud/acciones-y-programas/direccion-general-de-epidemiologia).
 
@@ -44,11 +44,11 @@ Los datos abiertos se pueden descargar en [este sitio](https://www.gob.mx/salud/
 devtools::install_github("alberto-mateos-mo/datoscovid19mx")
 ```
 
-La información considera a todas las personas a quienes les ha sido aplicada la prueba por lo que nos enfocaremos únicamente en aquellos con resultados positivo.
+La información reportada considera a todas las personas a quienes les ha sido aplicada la prueba de detección del virus por lo que nos enfocaremos únicamente en aquellos con resultados positivo.
 
-La Dirección General de Epidemiologia proporciona, además del resultado de la prueba, información demográfica y de salud de cada caso registrado, usaremos esa información como las covariables del modelo y la variable `tipo_paciente` como la variable a modelar, ésta identifica a cada registro como _Ambulatorio_ y _Hospitalizado_.
+La Dirección General de Epidemiologia proporciona, además del resultado de la prueba, información demográfica y de salud de cada caso registrado, usaremos esa información como las covariables del modelo y la variable `tipo paciente` como la variable a modelar; ésta identifica a cada registro como _Ambulatorio_ y _Hospitalizado_.
 
-Las variables: neumonia, diabetes, epoc, asma, inmusupr, hipertension, cardiovascular, obesidad, renal_cronica, y tabaquismo, indican si el caso presenta esa condición o no. La variable otra_com indica si el caso presenta alguna otra comorbilidad.
+Las variables: `neumonía`, `diabetes mellitus` (DM), `EPOC` (Enfermedad Pulmonar Obstructiva Crónica), `asma`, `inmunosupresión`, `hipertensión`, `enfermedad cardiovascular`, `obesidad`, `enfermedad renal crónica` y `tabaquismo`, indican si el caso presenta esa condición o no; la variable `otra comorbilidad` indica si el caso presenta alguna otra comorbilidad.
 
 Algo a considerar es que estas variables, además de los campos _si_ y _no_, contienen las opciones _no aplica_, _se ignora_ y _no especificado_; estas últimas las codificaremos como _no_.
 
@@ -116,8 +116,6 @@ En cuanto al sexo del paciente, las mujeres, en comparación con los hombres, ti
 
 El modelo anterior además de ayudarnos a entender qué características derivan en un mayor riesgo de hospitalización, también es útil como un modelo predictivo, el cual, dadas las características de un nuevo caso, nos dará la probabilidad que este tiene de ser hospitalizado.
 
-Por el momento mostraremos un par de ejemplos pero en un post próximo mostraremos cómo diseñar una calculadora de riesgo usando este modelo y el :package: shiny.
-
 Supongamos un caso positivo con las siguientes características:
 
 - Sexo: hombre
@@ -154,6 +152,12 @@ nuevo_caso <- data.frame(sexo = "HOMBRE", edad = 30, neumonia = "NO", diabetes =
 ```
 
 En este caso la probabilidad sería de: `r scales::percent(predict(modelo, nuevo_caso, type = "response"))`.
+
+#### Calculadora en línea
+
+Con el modelo obtenido se desarrolló una calculadora online para dispositivos móviles que permite estimar el riesgo de hospitalización para un paciente con ciertas características.
+
+Esta calculadora puede ser consultada [dando click aquí](https://davidalbertofciencias.shinyapps.io/covrcalc/).
 
 ### Hallazgos {#resultados}
 

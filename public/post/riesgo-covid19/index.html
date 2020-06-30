@@ -50,7 +50,7 @@ Explicaremos brevemente los datos a usar, crearemos el modelo y finalmente prese
 Mostraremos, además, cómo usar el modelo para estimar la probabilidad de hospitalización de un nuevo registro.">
 <meta itemprop="datePublished" content="2020-06-29T00:00:00&#43;00:00" />
 <meta itemprop="dateModified" content="2020-06-29T00:00:00&#43;00:00" />
-<meta itemprop="wordCount" content="887">
+<meta itemprop="wordCount" content="914">
 
 
 
@@ -94,7 +94,7 @@ Mostraremos, además, cómo usar el modelo para estimar la probabilidad de hospi
                     <div class="col-lg-8">
                         <div class="meta text-muted mb-3">
                             <p class="created text-muted text-uppercase font-weight-bold mb-1">June 29, 2020</p>
-                            <span class="mr-2"><i class="fas fa-book-open mr-2"></i>887 words</span>
+                            <span class="mr-2"><i class="fas fa-book-open mr-2"></i>914 words</span>
                             <span><i class="fas fa-clock mr-2"></i>5 mins read</span>
                         </div>
 
@@ -114,14 +114,14 @@ Mostraremos, además, cómo usar el modelo para estimar la probabilidad de hospi
 <p>Mostraremos, además, cómo usar el modelo para estimar la probabilidad de hospitalización de un nuevo registro.</p>
 <div id="datos" class="section level3">
 <h3>Datos</h3>
-<p>Puedes ir directamente a los hallazgos <a href="#resultados">acá</a>.</p>
+<p>Puedes ir directamente a los hallazgos dando click <a href="#resultados">aquí.</a>.</p>
 <p>La información usada es la que se reporta diariamente por la <a href="https://www.gob.mx/salud/acciones-y-programas/direccion-general-de-epidemiologia">Dirección General de Epidemiología</a>.</p>
 <p>Los datos abiertos se pueden descargar en <a href="https://www.gob.mx/salud/documentos/datos-abiertos-152127">este sitio</a> en formato csv o bien podemos instalarlos directamente en R usando:</p>
 <pre class="r"><code># install.packages(&quot;devtools&quot;)
 devtools::install_github(&quot;alberto-mateos-mo/datoscovid19mx&quot;)</code></pre>
-<p>La información considera a todas las personas a quienes les ha sido aplicada la prueba por lo que nos enfocaremos únicamente en aquellos con resultados positivo.</p>
-<p>La Dirección General de Epidemiologia proporciona, además del resultado de la prueba, información demográfica y de salud de cada caso registrado, usaremos esa información como las covariables del modelo y la variable <code>tipo_paciente</code> como la variable a modelar, ésta identifica a cada registro como <em>Ambulatorio</em> y <em>Hospitalizado</em>.</p>
-<p>Las variables: neumonia, diabetes, epoc, asma, inmusupr, hipertension, cardiovascular, obesidad, renal_cronica, y tabaquismo, indican si el caso presenta esa condición o no. La variable otra_com indica si el caso presenta alguna otra comorbilidad.</p>
+<p>La información reportada considera a todas las personas a quienes les ha sido aplicada la prueba de detección del virus por lo que nos enfocaremos únicamente en aquellos con resultados positivo.</p>
+<p>La Dirección General de Epidemiologia proporciona, además del resultado de la prueba, información demográfica y de salud de cada caso registrado, usaremos esa información como las covariables del modelo y la variable <code>tipo paciente</code> como la variable a modelar; ésta identifica a cada registro como <em>Ambulatorio</em> y <em>Hospitalizado</em>.</p>
+<p>Las variables: <code>neumonía</code>, <code>diabetes mellitus</code> (DM), <code>EPOC</code> (Enfermedad Pulmonar Obstructiva Crónica), <code>asma</code>, <code>inmunosupresión</code>, <code>hipertensión</code>, <code>enfermedad cardiovascular</code>, <code>obesidad</code>, <code>enfermedad renal crónica</code> y <code>tabaquismo</code>, indican si el caso presenta esa condición o no; la variable <code>otra comorbilidad</code> indica si el caso presenta alguna otra comorbilidad.</p>
 <p>Algo a considerar es que estas variables, además de los campos <em>si</em> y <em>no</em>, contienen las opciones <em>no aplica</em>, <em>se ignora</em> y <em>no especificado</em>; estas últimas las codificaremos como <em>no</em>.</p>
 </div>
 <div id="modelo-de-riesgo-de-hospitalización" class="section level3">
@@ -134,31 +134,31 @@ devtools::install_github(&quot;alberto-mateos-mo/datoscovid19mx&quot;)</code></p
 ## 
 ## Deviance Residuals: 
 ##     Min       1Q   Median       3Q      Max  
-## -3.2357  -0.5211  -0.3812   0.3918   2.8500  
+## -3.2406  -0.5192  -0.3803   0.3893   2.8534  
 ## 
 ## Coefficients:
 ##                   Estimate Std. Error  z value Pr(&gt;|z|)    
-## (Intercept)     -3.6410974  0.0286453 -127.110  &lt; 2e-16 ***
-## sexoMUJER       -0.4028147  0.0160681  -25.069  &lt; 2e-16 ***
-## edad             0.0384696  0.0005525   69.622  &lt; 2e-16 ***
-## neumoniaSI       3.3628740  0.0181826  184.950  &lt; 2e-16 ***
-## diabetesSI       0.5257216  0.0210522   24.972  &lt; 2e-16 ***
-## epocSI           0.3188479  0.0554630    5.749 8.99e-09 ***
-## asmaSI          -0.1867034  0.0497790   -3.751 0.000176 ***
-## inmusuprSI       0.6172660  0.0620937    9.941  &lt; 2e-16 ***
-## hipertensionSI   0.2291987  0.0205027   11.179  &lt; 2e-16 ***
-## otra_comSI       0.5660991  0.0436618   12.966  &lt; 2e-16 ***
-## obesidadSI       0.0940886  0.0194963    4.826 1.39e-06 ***
-## renal_cronicaSI  0.8563977  0.0506756   16.900  &lt; 2e-16 ***
-## tabaquismoSI    -0.1202777  0.0299127   -4.021 5.80e-05 ***
+## (Intercept)     -3.6473533  0.0284058 -128.402  &lt; 2e-16 ***
+## sexoMUJER       -0.4065214  0.0159814  -25.437  &lt; 2e-16 ***
+## edad             0.0385114  0.0005487   70.189  &lt; 2e-16 ***
+## neumoniaSI       3.3698614  0.0180527  186.668  &lt; 2e-16 ***
+## diabetesSI       0.5182428  0.0209589   24.727  &lt; 2e-16 ***
+## epocSI           0.2762439  0.0548517    5.036 4.75e-07 ***
+## asmaSI          -0.1076779  0.0493572   -2.182 0.029139 *  
+## inmusuprSI       0.6463699  0.0612069   10.560  &lt; 2e-16 ***
+## hipertensionSI   0.2237936  0.0203632   10.990  &lt; 2e-16 ***
+## otra_comSI       0.6080036  0.0433301   14.032  &lt; 2e-16 ***
+## obesidadSI       0.0677189  0.0193979    3.491 0.000481 ***
+## renal_cronicaSI  0.8135088  0.0507775   16.021  &lt; 2e-16 ***
+## tabaquismoSI    -0.1149681  0.0297469   -3.865 0.000111 ***
 ## ---
 ## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
 ## 
 ## (Dispersion parameter for binomial family taken to be 1)
 ## 
-##     Null deviance: 186113  on 150127  degrees of freedom
-## Residual deviance: 109096  on 150115  degrees of freedom
-## AIC: 109122
+##     Null deviance: 188961  on 152762  degrees of freedom
+## Residual deviance: 110505  on 152750  degrees of freedom
+## AIC: 110531
 ## 
 ## Number of Fisher Scoring iterations: 5</code></pre>
 <p><img src="/post/2020-06-29-riesgo-covid19.es_files/figure-html/unnamed-chunk-6-1.png" width="672" /></p>
@@ -174,7 +174,6 @@ devtools::install_github(&quot;alberto-mateos-mo/datoscovid19mx&quot;)</code></p
 <div id="estimación-de-riesgo-de-hospitalización." class="section level4">
 <h4>Estimación de riesgo de hospitalización.</h4>
 <p>El modelo anterior además de ayudarnos a entender qué características derivan en un mayor riesgo de hospitalización, también es útil como un modelo predictivo, el cual, dadas las características de un nuevo caso, nos dará la probabilidad que este tiene de ser hospitalizado.</p>
-<p>Por el momento mostraremos un par de ejemplos pero en un post próximo mostraremos cómo diseñar una calculadora de riesgo usando este modelo y el 📦 shiny.</p>
 <p>Supongamos un caso positivo con las siguientes características:</p>
 <ul>
 <li>Sexo: hombre</li>
@@ -192,9 +191,14 @@ devtools::install_github(&quot;alberto-mateos-mo/datoscovid19mx&quot;)</code></p
 </ul>
 <p>Esta persona tendría una probabilidad de 7% de ser hospitalizada, en el caso de contraer el virus SARS-CoV-2.</p>
 <p><strong>¿Cómo se compararía el riesgo con una persona similar pero que además tenga diabetes?</strong></p>
-<p>La probabilidad de hospitalización sería de 12%, esto es, el hecho de tener diabetes en esta persona derivó en un incremento de 5%.</p>
+<p>La probabilidad de hospitalización sería de 12%, esto es, el hecho de tener diabetes en esta persona derivó en un incremento de 4%.</p>
 <p><strong>¿Y si no tuviera obesidad?</strong></p>
 <p>En este caso la probabilidad sería de: 11%.</p>
+</div>
+<div id="calculadora-en-línea" class="section level4">
+<h4>Calculadora en línea</h4>
+<p>Con el modelo obtenido se desarrolló una calculadora online para dispositivos móviles que permite estimar el riesgo de hospitalización para un paciente con ciertas características.</p>
+<p>Esta calculadora puede ser consultada <a href="https://davidalbertofciencias.shinyapps.io/covrcalc/">dando click aquí</a>.</p>
 </div>
 </div>
 <div id="resultados" class="section level3">
