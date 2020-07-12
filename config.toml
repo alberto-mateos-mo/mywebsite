@@ -33,7 +33,7 @@ author = "authors"
 [params]
   author = "David Mateos"
   description = "A personal data science blog."
-  homepageImage = "/images/my_homepage.png"
+  homepageImage = "/images/my_homepage.jpg"
   share = true
   showLanguageSwitcher = false
 
@@ -50,8 +50,8 @@ author = "authors"
 
   [params.prismJS]
     enable = true
-    theme = ""
-
+    theme = "twilight"
+    
   [params.commento]
     enable = true
     url = "https://commento.io"

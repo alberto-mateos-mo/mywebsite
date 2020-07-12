@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>NLP on David Alberto</title>
+    <link>/tags/nlp/</link>
+    <description>Recent content in NLP on David Alberto</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en</language>
+    <lastBuildDate>Fri, 10 Jul 2020 00:00:00 +0000</lastBuildDate>
+    
+	<atom:link href="/tags/nlp/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>Automatizando la vida diaria: Amazon</title>
+      <link>/post/r-meets-amazon/</link>
+      <pubDate>Fri, 10 Jul 2020 00:00:00 +0000</pubDate>
+      
+      <guid>/post/r-meets-amazon/</guid>
+      <description>Estoy convencido de que saber un lenguaje de programación puede ayudarte no solo en tu vida profesional y/o académica sino también en tu vida diaria, por ello he decidido empezar una serie llamada Automatizando la vida diaria, donde mostraré cómo automatizar algunos procesos cotidianos.
+En este primer post enseñaré como obtener comentarios de productos de Amazon usando R para aplicarles un poco de analytics y así sacarles provecho a la hora de elegir un producto.</description>
+    </item>
+    
+  </channel>
+</rss>

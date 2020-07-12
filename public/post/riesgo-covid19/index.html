@@ -20,7 +20,7 @@
 
 
     
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.17.1/themes/prism.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.17.1/themes/prism-twilight.min.css">
     
 
 
@@ -50,7 +50,7 @@ Explicaremos brevemente los datos a usar, crearemos el modelo y finalmente prese
 Mostraremos, además, cómo usar el modelo para estimar la probabilidad de hospitalización de un nuevo registro.">
 <meta itemprop="datePublished" content="2020-06-29T00:00:00&#43;00:00" />
 <meta itemprop="dateModified" content="2020-06-29T00:00:00&#43;00:00" />
-<meta itemprop="wordCount" content="914">
+<meta itemprop="wordCount" content="948">
 
 
 
@@ -94,7 +94,7 @@ Mostraremos, además, cómo usar el modelo para estimar la probabilidad de hospi
                     <div class="col-lg-8">
                         <div class="meta text-muted mb-3">
                             <p class="created text-muted text-uppercase font-weight-bold mb-1">June 29, 2020</p>
-                            <span class="mr-2"><i class="fas fa-book-open mr-2"></i>914 words</span>
+                            <span class="mr-2"><i class="fas fa-book-open mr-2"></i>948 words</span>
                             <span><i class="fas fa-clock mr-2"></i>5 mins read</span>
                         </div>
 
@@ -121,7 +121,7 @@ Mostraremos, además, cómo usar el modelo para estimar la probabilidad de hospi
 devtools::install_github(&quot;alberto-mateos-mo/datoscovid19mx&quot;)</code></pre>
 <p>La información reportada considera a todas las personas a quienes les ha sido aplicada la prueba de detección del virus por lo que nos enfocaremos únicamente en aquellos con resultados positivo.</p>
 <p>La Dirección General de Epidemiologia proporciona, además del resultado de la prueba, información demográfica y de salud de cada caso registrado, usaremos esa información como las covariables del modelo y la variable <code>tipo paciente</code> como la variable a modelar; ésta identifica a cada registro como <em>Ambulatorio</em> y <em>Hospitalizado</em>.</p>
-<p>Las variables: <code>neumonía</code>, <code>diabetes mellitus</code> (DM), <code>EPOC</code> (Enfermedad Pulmonar Obstructiva Crónica), <code>asma</code>, <code>inmunosupresión</code>, <code>hipertensión</code>, <code>enfermedad cardiovascular</code>, <code>obesidad</code>, <code>enfermedad renal crónica</code> y <code>tabaquismo</code>, indican si el caso presenta esa condición o no; la variable <code>otra comorbilidad</code> indica si el caso presenta alguna otra comorbilidad.</p>
+<p>Las variables: <code>neumonía</code>, <code>diabetes mellitus</code> (DM), <code>EPOC</code> (Enfermedad Pulmonar Obstructiva Crónica), <code>asma</code>, <code>inmunosupresión</code>, <code>hipertensión</code>, <code>enfermedad cardiovascular</code>, <code>obesidad</code>, <code>enfermedad renal crónica</code> (ERC) y <code>tabaquismo</code>, indican si el caso presenta esa condición o no; la variable <code>otra comorbilidad</code> indica si el caso presenta alguna otra comorbilidad.</p>
 <p>Algo a considerar es que estas variables, además de los campos <em>si</em> y <em>no</em>, contienen las opciones <em>no aplica</em>, <em>se ignora</em> y <em>no especificado</em>; estas últimas las codificaremos como <em>no</em>.</p>
 </div>
 <div id="modelo-de-riesgo-de-hospitalización" class="section level3">
@@ -134,31 +134,31 @@ devtools::install_github(&quot;alberto-mateos-mo/datoscovid19mx&quot;)</code></p
 ## 
 ## Deviance Residuals: 
 ##     Min       1Q   Median       3Q      Max  
-## -3.2406  -0.5192  -0.3803   0.3893   2.8534  
+## -3.2804  -0.5142  -0.3738   0.3639   2.9175  
 ## 
 ## Coefficients:
 ##                   Estimate Std. Error  z value Pr(&gt;|z|)    
-## (Intercept)     -3.6473533  0.0284058 -128.402  &lt; 2e-16 ***
-## sexoMUJER       -0.4065214  0.0159814  -25.437  &lt; 2e-16 ***
-## edad             0.0385114  0.0005487   70.189  &lt; 2e-16 ***
-## neumoniaSI       3.3698614  0.0180527  186.668  &lt; 2e-16 ***
-## diabetesSI       0.5182428  0.0209589   24.727  &lt; 2e-16 ***
-## epocSI           0.2762439  0.0548517    5.036 4.75e-07 ***
-## asmaSI          -0.1076779  0.0493572   -2.182 0.029139 *  
-## inmusuprSI       0.6463699  0.0612069   10.560  &lt; 2e-16 ***
-## hipertensionSI   0.2237936  0.0203632   10.990  &lt; 2e-16 ***
-## otra_comSI       0.6080036  0.0433301   14.032  &lt; 2e-16 ***
-## obesidadSI       0.0677189  0.0193979    3.491 0.000481 ***
-## renal_cronicaSI  0.8135088  0.0507775   16.021  &lt; 2e-16 ***
-## tabaquismoSI    -0.1149681  0.0297469   -3.865 0.000111 ***
+## (Intercept)     -3.7291801  0.0264566 -140.954  &lt; 2e-16 ***
+## sexoMUJER       -0.4039366  0.0148085  -27.277  &lt; 2e-16 ***
+## edad             0.0393934  0.0005096   77.307  &lt; 2e-16 ***
+## neumoniaSI       3.4102234  0.0170046  200.547  &lt; 2e-16 ***
+## diabetesSI       0.5290637  0.0193096   27.399  &lt; 2e-16 ***
+## epocSI           0.2528590  0.0518983    4.872 1.10e-06 ***
+## asmaSI          -0.1683823  0.0467407   -3.602 0.000315 ***
+## inmusuprSI       0.6073466  0.0577203   10.522  &lt; 2e-16 ***
+## hipertensionSI   0.2183957  0.0188248   11.601  &lt; 2e-16 ***
+## otra_comSI       0.6635279  0.0398129   16.666  &lt; 2e-16 ***
+## obesidadSI       0.1033378  0.0180061    5.739 9.52e-09 ***
+## renal_cronicaSI  0.8895913  0.0466298   19.078  &lt; 2e-16 ***
+## tabaquismoSI    -0.1085512  0.0277820   -3.907 9.34e-05 ***
 ## ---
 ## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
 ## 
 ## (Dispersion parameter for binomial family taken to be 1)
 ## 
-##     Null deviance: 188961  on 152762  degrees of freedom
-## Residual deviance: 110505  on 152750  degrees of freedom
-## AIC: 110531
+##     Null deviance: 221047  on 181211  degrees of freedom
+## Residual deviance: 128837  on 181199  degrees of freedom
+## AIC: 128863
 ## 
 ## Number of Fisher Scoring iterations: 5</code></pre>
 <p><img src="/post/2020-06-29-riesgo-covid19.es_files/figure-html/unnamed-chunk-6-1.png" width="672" /></p>
@@ -167,7 +167,7 @@ devtools::install_github(&quot;alberto-mateos-mo/datoscovid19mx&quot;)</code></p
 <h4>Factores de riesgo</h4>
 <p>A partir de los coeficientes del modelo, también conocidos como logits, podemos identificar aquellas características con un impacto positivo, <em>ceteris paribus</em>, en la probabilidad de hospitalización.</p>
 <p>Como <em>regla de dedo</em>, los coeficientes negativos tienen asociada una probabilidad de hospitalización menor al 50% y los coeficientes positivos, mayor al 50%.</p>
-<p>En este sentido, las características con mayor impacto al riesgo de hospitalización son: presencia de neumonía, diabetes, epoc, inmunosupresión, hipertensión, obesidad, enfermedad renal crónica, otras comorbilidades y edad avanzada.</p>
+<p>En este sentido, las características con mayor impacto al riesgo de hospitalización son: presencia de neumonía, diabetes mellitus, epoc, inmunosupresión, hipertensión, obesidad, enfermedad renal crónica (ERC), otras comorbilidades y edad avanzada.</p>
 <p>Por el contrario, las características con menor riesgo de hospitalización son: asma y tabaquismo.</p>
 <p>En cuanto al sexo del paciente, las mujeres, en comparación con los hombres, tienen menor riesgo de hospitalización.</p>
 </div>
@@ -179,19 +179,19 @@ devtools::install_github(&quot;alberto-mateos-mo/datoscovid19mx&quot;)</code></p
 <li>Sexo: hombre</li>
 <li>Edad: 30</li>
 <li>Neumonia: no</li>
-<li>Diabetes: no</li>
+<li>Diabetes Mellitus: no</li>
 <li>Epoc: no</li>
 <li>Asma: no</li>
 <li>Inmunosupresión: no</li>
 <li>Hipertensión: no</li>
 <li>Obesidad: si</li>
-<li>Enfermedad renal crónica: no</li>
+<li>Enfermedad renal crónica (ERC): no</li>
 <li>Otra comorbilidad: no</li>
 <li>Tabaquismo: si</li>
 </ul>
 <p>Esta persona tendría una probabilidad de 7% de ser hospitalizada, en el caso de contraer el virus SARS-CoV-2.</p>
-<p><strong>¿Cómo se compararía el riesgo con una persona similar pero que además tenga diabetes?</strong></p>
-<p>La probabilidad de hospitalización sería de 12%, esto es, el hecho de tener diabetes en esta persona derivó en un incremento de 4%.</p>
+<p><strong>¿Cómo se compararía el riesgo con una persona similar pero que además tenga diabetes mellitus?</strong></p>
+<p>La probabilidad de hospitalización sería de 12%, esto es, el hecho de tener diabetes mellitus en esta persona derivó en un incremento de 4%.</p>
 <p><strong>¿Y si no tuviera obesidad?</strong></p>
 <p>En este caso la probabilidad sería de: 11%.</p>
 </div>
@@ -199,6 +199,7 @@ devtools::install_github(&quot;alberto-mateos-mo/datoscovid19mx&quot;)</code></p
 <h4>Calculadora en línea</h4>
 <p>Con el modelo obtenido se desarrolló una calculadora online para dispositivos móviles que permite estimar el riesgo de hospitalización para un paciente con ciertas características.</p>
 <p>Esta calculadora puede ser consultada <a href="https://davidalbertofciencias.shinyapps.io/covrcalc/">dando click aquí</a>.</p>
+<p>N.B. La calculadora se actualizará semanalmente para reflejar el comportamiento más reciente por lo que los resultados en ella pueden diferir de los aquí expuestos.</p>
 </div>
 </div>
 <div id="resultados" class="section level3">
@@ -206,10 +207,10 @@ devtools::install_github(&quot;alberto-mateos-mo/datoscovid19mx&quot;)</code></p
 <p>El modelo creado arrojó que las variables con mayor impacto al riesgo de hospitalización por SARS-CoV-2 en México son (en orden de importancia):</p>
 <ul>
 <li>Neumonía</li>
-<li>Enfermedad renal crónica</li>
+<li>Enfermedad renal crónica (ERC)</li>
 <li>Inmunosupresión</li>
 <li>Otra comorbilidad</li>
-<li>Diabetes</li>
+<li>Diabetes Mellitus</li>
 <li>EPOC</li>
 <li>Hipertensión</li>
 <li>Obesidad</li>

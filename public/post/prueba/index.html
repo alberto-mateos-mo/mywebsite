@@ -1,0 +1,292 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+<title>
+  
+     prueba | 
+    David Alberto
+  
+</title><meta name="description" content="A personal data science blog."><meta name="author" content="David Mateos">
+
+<link rel="apple-touch-icon" href="/apple-touch-icon.png" sizes="180x180">
+<link rel="icon" href="/favicon-32x32.png " sizes="32x32" type="image/png">
+<link rel="icon" href="/favicon-16x16.png" sizes="16x16" type="image/png">
+<link rel="manifest" href="/manifest.json">
+<link rel="mask-icon" href="/safari-pinned-tab.svg" color="#0c344b">
+<link rel="icon" href="/favicon.ico">
+
+
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.17.1/themes/prism-twilight.min.css">
+    
+
+
+
+    
+        
+            <link rel="stylesheet" href="/dist/main.37ab3f61b95417873748.min.css">
+        
+    
+
+
+
+
+<link rel="canonical" href="/post/prueba/"><meta property="og:title" content="prueba" />
+<meta property="og:description" content="Estoy convencido de que saber un lenguaje de programación puede ayudarte no solo en tu vida profesional y académica sino también en tu vida diaria, por ello he decidido empezar una serie llamada Automatizando la vida diaria, donde mostraré cómo automatizar algunos procesos de nuestra vida diaria.
+En este primer post enseñaré como obtener comentarios de productos de Amazon usando R y además les aplicaremos un poco de Analytics para sacarles provecho a la hora de elegir un producto." />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="/post/prueba/" />
+<meta property="article:published_time" content="2020-07-07T00:00:00+00:00" />
+<meta property="article:modified_time" content="2020-07-07T00:00:00+00:00" />
+<meta itemprop="name" content="prueba">
+<meta itemprop="description" content="Estoy convencido de que saber un lenguaje de programación puede ayudarte no solo en tu vida profesional y académica sino también en tu vida diaria, por ello he decidido empezar una serie llamada Automatizando la vida diaria, donde mostraré cómo automatizar algunos procesos de nuestra vida diaria.
+En este primer post enseñaré como obtener comentarios de productos de Amazon usando R y además les aplicaremos un poco de Analytics para sacarles provecho a la hora de elegir un producto.">
+<meta itemprop="datePublished" content="2020-07-07T00:00:00&#43;00:00" />
+<meta itemprop="dateModified" content="2020-07-07T00:00:00&#43;00:00" />
+<meta itemprop="wordCount" content="659">
+
+
+
+<meta itemprop="keywords" content="" /><meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="prueba"/>
+<meta name="twitter:description" content="Estoy convencido de que saber un lenguaje de programación puede ayudarte no solo en tu vida profesional y académica sino también en tu vida diaria, por ello he decidido empezar una serie llamada Automatizando la vida diaria, donde mostraré cómo automatizar algunos procesos de nuestra vida diaria.
+En este primer post enseñaré como obtener comentarios de productos de Amazon usando R y además les aplicaremos un poco de Analytics para sacarles provecho a la hora de elegir un producto."/>
+
+</head>
+<body>
+    
+<nav class="navbar navbar-expand-md navbar-light bg-light fixed-top shadow-sm" id="navbar-main-menu">
+    <div class="container">
+        <a class="navbar-brand font-weight-bold" href="/">David Alberto</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#main-menu" aria-controls="main-menu" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="main-menu">
+            <ul class="navbar-nav ml-auto">
+                
+                    <li class="nav-item"><a class="nav-link" href="/">Home</a></li>
+                
+                    <li class="nav-item"><a class="nav-link" href="/about/">About</a></li>
+                
+            
+            </ul>
+        </div>
+    </div>
+</nav>
+
+
+    
+<main class="content-page container pt-7 pb-5">
+    
+    <div class="row">
+        <div class="col">
+            <article>
+                <div class="row justify-content-center">
+                    <div class="col-lg-8">
+                        <div class="meta text-muted mb-3">
+                            <p class="created text-muted text-uppercase font-weight-bold mb-1">July 7, 2020</p>
+                            <span class="mr-2"><i class="fas fa-book-open mr-2"></i>659 words</span>
+                            <span><i class="fas fa-clock mr-2"></i>4 mins read</span>
+                        </div>
+
+                        <h1>prueba</h1>
+
+                        
+                    </div>
+                </div><div class="row justify-content-center">
+                    <div class="col-lg-8">
+                        <div class="content">
+                            <p>Estoy convencido de que saber un lenguaje de programación puede ayudarte no solo en tu vida profesional y académica sino también en tu vida diaria, por ello he decidido empezar una serie llamada <em>Automatizando la vida diaria</em>, donde mostraré cómo automatizar algunos procesos de nuestra vida diaria.</p>
+<p>En este primer post enseñaré como obtener comentarios de productos de Amazon usando R y además les aplicaremos un poco de <em>Analytics</em> para sacarles provecho a la hora de elegir un producto.</p>
+<h3 id="motivación">Motivación</h3>
+<p>Como a muchos, me preocupa que al hacer compras por internet esté eligiendo el producto adecuado dado que no podré verlo sino hasta que me lo entreguen 😬. Por ello cuando estoy en busca de un producto suelo pasar una buena parte de tiempo viendo/leyendo reseñas para asegurarme de hacer una buena elección pero a pesar del esfuerzo nunca podré leerlas todas y hay ocasiones en donde preferiría ocupar mi tiempo en algo más interesante que eso, honestamente sería mucho más fácil si alguien lo hiciera por mi 😆.</p>
+<p>Pues de esa necesidad e inspirado por <a href="https://martinctc.github.io/blog/vignette-scraping-amazon-reviews-in-r/">este post</a> se me ocurrío que el proceso de <em>análisis</em> de las opiniones de productos en Amazon bien puede automatizarse usando R.</p>
+<h3 id="requisitos">Requisitos</h3>
+<p>Para el proceso de descarga de las opiniones usaremos las siguientes librerías.</p>
+<ul>
+<li>
+<p><a href="https://github.com/tidyverse/rvest">{rvest}</a>: Este paquete es el que nos permitirá descargar información de páginas web.</p>
+</li>
+<li>
+<p><a href="https://github.com/dmi3kno/polite">{polite}</a>: Con este paquete seremos educados al hacer <em>scrapping</em> para evitar romper ciertas reglas sobre el uso de bots en la navegación web.</p>
+</li>
+<li>
+<p><a href="https://github.com/tidyverse/stringr">{stringr}</a>: Este lo usaremos para el proceso de limpieza.</p>
+</li>
+<li>
+<p><a href="https://github.com/tidyverse/purrr">{purrr}</a>: Este no está directamente relacionado con la tarea de descarga de información pero nos ayudará en las funciones que crearemos.</p>
+</li>
+</ul>
+<p>Y por supuesto usaremos <a href="https://www.amazon.com.mx/">Amazon</a> como el sitio para descargar las opiniones.</p>
+<h3 id="muy-breve-introducción-a-_web-scrapping_">(Muy) Breve introducción a <em>web scrapping</em></h3>
+<p>El termino <em>web scrapping</em> hace referencia a una técnica que permite extraer información de sitios web para <em>exportarla</em> a formatos que sean más amigables y/o útiles.</p>
+<p>Generalmente esto significa que la información que necesitamos no está disponible en ningún archivo y el único lugar donde se encuentra es justamente una página web.</p>
+<p>El proceso de extracción no suele ser sencillo dado que hay una gran cantidad de tipos de sitios web y sus respectivas configuraciones harán que el algoritmo de extracción varíe, sin embargo suele ser más fácil (y rápido) que extraer la información manualmente, i.e. CTRL+C &amp; CTRL+V.</p>
+<p>Para poder hacer la extracción será necesario saber <em>dónde</em> está la información. Para simplificar las cosas pensemos que una página web funciona como un directorio de nuestra computadora, así que será necesario entender <em>en qué carpeta</em> está eso que queremos; para encontrarla usaremos las herramientas de desarrollador disponibles en algunos buscadores (en nuestro caso usaremos Google Chrome).</p>
+<p>En Chrome será tan fácil cómo colocar el cursor sobre el contenido de interés, dar click derecho y luego dar click en <em>Inspect</em> o <em>Inspeccionar</em>.</p>
+<h3 id="extrayendo-comentarios-de-amazon">Extrayendo comentarios de Amazon</h3>
+<p><strong>¿Dónde están los comentarios?</strong></p>
+<p>Primero será pertienente mencionar que cada producto en Amazon viene con código único que lo identifica y que podemos encontrar en la URL del producto:</p>
+<p><img src="/post/2020-07-08-r-meets-amazon.es_files/product_code.png" alt="Código del producto">{width=90%}</p>
+<p>Una vez identificado el código del producto podemos usarlo para buscar la opiniones de éste, si bien podemos encontrarlas en la misma <em>página</em> en la que estemos viendo el producto, será más fácil (para la automatización) usar la dirección: <a href="http://www.amazon.com.mx/product-reviews/%22c">www.amazon.com.mx/product-reviews/&quot;c</a>ódigo_del_producto&rdquo;. En nuestro ejemplo esta dirección se convierte en: <a href="https://www.amazon.com.mx/product-reviews/B08356LFM3">www.amazon.com.mx/product-reviews/B08356LFM3</a>.</p>
+<p>Ahora sí, usando la herramienta de inspección de Chrome podemo identificar dónde están <em>guardados</em> los comentarios:</p>
+<p><img src="/post/2020-07-08-r-meets-amazon.es_files/product_review.png" alt="Opinión del producto">{width=100%}</p>
+<p>Notemos además que si queremos ver otra página de opiniones la dirección quedaría construída como sigue: <a href="https://www.amazon.com.mx/product-reviews/B08356LFM3/?pageNumber=2">https://www.amazon.com.mx/product-reviews/B08356LFM3/?pageNumber=2</a></p>
+<h3 id="automatizando-la-extracción">Automatizando la extracción</h3>
+<p>Una vez entendido (más o menos) de dónde obtener la información podemos crear las funciones necesarias para automatizar la extracción.</p>
+<p>La primera función será la que justamente hará el trabajo de extracción:</p>
+<pre><code class="language-r">get_reviews &lt;- function(id, pages){
+  
+  webpage &lt;- paste0(&quot;https://www.amazon.com.mx/product-reviews/&quot;, id)
+  session &lt;- bow(webpage)
+  
+  reviews_list &lt;- map(1:pages, ~scrape(session, query = list(pageNumber = .x)) %&gt;% 
+                              html_nodes(&quot;[class='a-size-base review-text review-text-content']&quot;) %&gt;% 
+                              html_text())
+  
+  reviews &lt;- clean_reviews(unlist(reviews_list))
+  
+  return(reviews)
+
+}
+</code></pre>
+
+                        </div><ul class="share nav my-3 justify-content-end">
+        <li class="nav-item">
+            <a class="nav-link" target="_blank" href="https://twitter.com/intent/tweet?url=%2fpost%2fprueba%2f&text=prueba">
+              <i class="fa-fw fab fa-twitter"></i>
+          </a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" target="_blank" href="https://www.linkedin.com/shareArticle?url=%2fpost%2fprueba%2f&title=prueba">
+                <i class="fa-fw fab fa-linkedin-in"></i>
+            </a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" target="_blank" href="https://www.facebook.com/sharer.php?u=%2fpost%2fprueba%2f&t=prueba">
+                <i class="fa-fw fab fa-facebook-f"></i>
+            </a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" target="_blank" href="https://reddit.com/submit?url=%2fpost%2fprueba%2f&title=prueba">
+                <i class="fa-fw fab fa-reddit-alien"></i>
+            </a>
+        </li>
+    </nav>
+                    </div>
+                </div>
+
+                <div class="row justify-content-center">
+                    <div class="col-lg-8">
+                        
+                    </div>
+                </div><div class="row justify-content-center my-3">
+                    <div class="col-lg-8">
+                        <div id="commento"></div>
+                        <script src="https://commento.io"></script>
+                    </div>
+                </div></article>
+        </div>
+    </div>
+
+    
+</main>
+
+
+    <footer class="footer text-center bg-dark py-6">
+  <script src="//yihui.org/js/math-code.js"></script>
+<script async
+src="//cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-MML-AM_CHTML">
+</script>
+  
+    <div class="container">
+        <div class="row">
+            <div class="col">
+                <ul class="list-inline">
+                    <li class="list-inline-item"><a href="/index.xml" rel="alternate" type="application/rss+xml" class="icons d-block">
+                                    <span class="fa-stack fa-lg">
+                                        <i class="fa fa-circle fa-stack-2x"></i>
+                                        <i class="fa fa-rss fa-stack-1x fa-inverse"></i>
+                                    </span>
+                                </a></li><li class="list-inline-item">
+                        <a href="mailto:davidmateosmo@gmail.com" class="icons d-block">
+                            <span class="fa-stack fa-lg">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa fa-envelope fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li><li class="list-inline-item">
+                            <a href="https://github.com/alberto-mateos-mo" class="icons d-block">
+                                <span class="fa-stack fa-lg">
+                                    <i class="fa fa-circle fa-stack-2x"></i>
+                                    <i class="fab fa-github fa-stack-1x fa-inverse"></i>
+                                </span>
+                            </a>
+                        </li><li class="list-inline-item">
+                            <a href="https://www.linkedin.com/in/davidalbertommo/" class="icons d-block">
+                                <span class="fa-stack fa-lg">
+                                    <i class="fa fa-circle fa-stack-2x"></i>
+                                    <i class="fab fa-linkedin fa-stack-1x fa-inverse"></i>
+                                </span>
+                            </a>
+                        </li><li class="list-inline-item">
+                            <a href="https://twitter.com/deividmmo" class="icons d-block">
+                                <span class="fa-stack fa-lg">
+                                    <i class="fa fa-circle fa-stack-2x"></i>
+                                    <i class="fab fa-twitter fa-stack-1x fa-inverse"></i>
+                                </span>
+                            </a>
+                        </li>
+                </ul>
+
+                <p class="text-muted">
+                    
+                        Copyright &copy; David Alberto 2020
+                    
+                </p>
+
+                <p class="text-muted">
+                Powered by <a href="https://gohugo.io" target="_blank">Hugo</a> with <a href="https://github.com/puresyntax71/hugo-theme-chunky-poster" target="_blank">Chunky Poster</a>.
+                </p>
+            </div>
+        </div>
+    </div>
+</footer>
+    
+    
+        
+            <script src="/dist/main.d608eadfe5ac0688902e.min.js"></script>
+        
+    
+
+
+
+<script>
+    window.Prism = window.Prism || {};
+    window.Prism.manual = true;
+</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.17.1/components/prism-core.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.17.1/plugins/autoloader/prism-autoloader.min.js"></script>
+
+
+
+
+    
+<script type="application/javascript">
+var doNotTrack = false;
+if (!doNotTrack) {
+	(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+	(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+	m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+	})(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+	ga('create', 'UA-XXXX', 'auto');
+	
+	ga('send', 'pageview');
+}
+</script>
+
+</body>
+</html>

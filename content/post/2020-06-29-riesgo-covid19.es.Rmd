@@ -48,7 +48,7 @@ La información reportada considera a todas las personas a quienes les ha sido a
 
 La Dirección General de Epidemiologia proporciona, además del resultado de la prueba, información demográfica y de salud de cada caso registrado, usaremos esa información como las covariables del modelo y la variable `tipo paciente` como la variable a modelar; ésta identifica a cada registro como _Ambulatorio_ y _Hospitalizado_.
 
-Las variables: `neumonía`, `diabetes mellitus` (DM), `EPOC` (Enfermedad Pulmonar Obstructiva Crónica), `asma`, `inmunosupresión`, `hipertensión`, `enfermedad cardiovascular`, `obesidad`, `enfermedad renal crónica` y `tabaquismo`, indican si el caso presenta esa condición o no; la variable `otra comorbilidad` indica si el caso presenta alguna otra comorbilidad.
+Las variables: `neumonía`, `diabetes mellitus` (DM), `EPOC` (Enfermedad Pulmonar Obstructiva Crónica), `asma`, `inmunosupresión`, `hipertensión`, `enfermedad cardiovascular`, `obesidad`, `enfermedad renal crónica` (ERC) y `tabaquismo`, indican si el caso presenta esa condición o no; la variable `otra comorbilidad` indica si el caso presenta alguna otra comorbilidad.
 
 Algo a considerar es que estas variables, además de los campos _si_ y _no_, contienen las opciones _no aplica_, _se ignora_ y _no especificado_; estas últimas las codificaremos como _no_.
 
@@ -106,7 +106,7 @@ A partir de los coeficientes del modelo, también conocidos como logits, podemos
 
 Como _regla de dedo_, los coeficientes negativos tienen asociada una probabilidad de hospitalización menor al 50% y los coeficientes positivos, mayor al 50%.
 
-En este sentido, las características con mayor impacto al riesgo de hospitalización son: presencia de neumonía, diabetes, epoc, inmunosupresión, hipertensión, obesidad, enfermedad renal crónica, otras comorbilidades y edad avanzada.
+En este sentido, las características con mayor impacto al riesgo de hospitalización son: presencia de neumonía, diabetes mellitus, epoc, inmunosupresión, hipertensión, obesidad, enfermedad renal crónica (ERC), otras comorbilidades y edad avanzada.
 
 Por el contrario, las características con menor riesgo de hospitalización son: asma y tabaquismo.
 
@@ -121,13 +121,13 @@ Supongamos un caso positivo con las siguientes características:
 - Sexo: hombre
 - Edad: 30
 - Neumonia: no
-- Diabetes: no
+- Diabetes Mellitus: no
 - Epoc: no
 - Asma: no
 - Inmunosupresión: no
 - Hipertensión: no
 - Obesidad: si
-- Enfermedad renal crónica: no
+- Enfermedad renal crónica (ERC): no
 - Otra comorbilidad: no
 - Tabaquismo: si
 
@@ -137,13 +137,13 @@ nuevo_caso <- data.frame(sexo = "HOMBRE", edad = 30, neumonia = "NO", diabetes =
 
 Esta persona tendría una probabilidad de `r scales::percent(predict(modelo, nuevo_caso, type = "response"))` de ser hospitalizada, en el caso de contraer el virus SARS-CoV-2.
 
-__¿Cómo se compararía el riesgo con una persona similar pero que además tenga diabetes?__
+__¿Cómo se compararía el riesgo con una persona similar pero que además tenga diabetes mellitus?__
 
 ```{r, echo=FALSE}
 nuevo_caso2 <- data.frame(sexo = "HOMBRE", edad = 30, neumonia = "NO", diabetes = "SI", epoc = "NO", asma = "NO", inmusupr = "NO", hipertension = "NO", otra_com = "NO", obesidad = "SI", renal_cronica = "NO", tabaquismo = "SI")
 ```
 
-La probabilidad de hospitalización sería de `r scales::percent(predict(modelo, nuevo_caso2, type = "response"))`, esto es, el hecho de tener diabetes en esta persona derivó en un incremento de `r scales::percent(predict(modelo, nuevo_caso2, type = "response")-predict(modelo, nuevo_caso, type = "response"))`.
+La probabilidad de hospitalización sería de `r scales::percent(predict(modelo, nuevo_caso2, type = "response"))`, esto es, el hecho de tener diabetes mellitus en esta persona derivó en un incremento de `r scales::percent(predict(modelo, nuevo_caso2, type = "response")-predict(modelo, nuevo_caso, type = "response"))`.
 
 __¿Y si no tuviera obesidad?__
 
@@ -159,15 +159,17 @@ Con el modelo obtenido se desarrolló una calculadora online para dispositivos m
 
 Esta calculadora puede ser consultada [dando click aquí](https://davidalbertofciencias.shinyapps.io/covrcalc/).
 
+N.B. La calculadora se actualizará semanalmente para reflejar el comportamiento más reciente por lo que los resultados en ella pueden diferir de los aquí expuestos.
+
 ### Hallazgos {#resultados}
 
 El modelo creado arrojó que las variables con mayor impacto al riesgo de hospitalización por SARS-CoV-2 en México son (en orden de importancia):
 
 - Neumonía
-- Enfermedad renal crónica
+- Enfermedad renal crónica (ERC)
 - Inmunosupresión
 - Otra comorbilidad
-- Diabetes
+- Diabetes Mellitus
 - EPOC
 - Hipertensión
 - Obesidad
